@@ -3,7 +3,7 @@ package com.yourgame.characters.item;
 import com.badlogic.gdx.graphics.Texture;
 import com.yourgame.characters.Move;
 
-public class Item {
+public abstract class Item {
     public float x;
     public float y;
     private Texture texture;
@@ -14,20 +14,7 @@ public class Item {
         this.texture = texture;
     }
 
-    public void move(Move direction, float value) {
-        switch (direction) {
-            case UP:
-                y -= value;
-                break;
-            case DOWN:
-                y += value;
-                break;
-            case RIGHT:
-                x += value;
-                break;
-            case LEFT:
-                x -= value;
-                break;
-        }
-    }
+    abstract void use();
+
+
 }

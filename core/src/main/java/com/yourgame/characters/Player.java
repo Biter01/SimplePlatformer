@@ -1,6 +1,7 @@
 package com.yourgame.characters;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.yourgame.characters.item.Item;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +37,21 @@ public class Player extends Character{
     }
 
     @Override
-    public void attack() {
+    public void useItem(Item item) {
 
     }
 
-    public void addItem(Item item) {
-        inventory.addLast(item);
+    @Override
+    public void draw(SpriteBatch batch) {
+
     }
+
+    public void removeItem(int pos) {
+    }
+
+//    public void addItem(Item item) {
+//        inventory.addLast(item);
+//    }
 
     public Item selectItem(int pos) {
         selected = pos;

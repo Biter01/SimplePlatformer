@@ -27,7 +27,8 @@ public class Core extends ApplicationAdapter {
     private float screenScale;
     private Player player;
     private Texture playerTexture;
-
+    private int score = 0;
+    private Texture laserTexture;
 
     @Override
     public void create () {
@@ -37,6 +38,7 @@ public class Core extends ApplicationAdapter {
 
         blockSpriteSheet = new Texture(Gdx.files.internal("tilemapRev6.png"));
         gunTexture = new Texture(Gdx.files.internal("LaserWaffe.png"));
+        laserTexture = new Texture(Gdx.files.internal("Laser.png"));
 
         int FRAME_ROWS = 3;
         int FRAME_COLS = 3;
@@ -50,7 +52,7 @@ public class Core extends ApplicationAdapter {
         float xCordinate = gameWorld.width * TILE_SIZE / 2.f;
         float yCordinate = gameWorld.height * TILE_SIZE / 2.f;
 
-        player = new Player(xCordinate, yCordinate, 100, "Spieler1", "Spieler1.png");
+        player = new Player(xCordinate, yCordinate, 100, "Spieler1", "SpielerSuit.png");
         playerTexture = player.getTexture();
 
         camera = new OrthographicCamera(gameWorld.width * TILE_SIZE , (gameWorld.height * TILE_SIZE ) /screenScale);
@@ -145,6 +147,7 @@ public class Core extends ApplicationAdapter {
             1, screenScale, gunRotation,
             0, 0, gunTexture.getWidth(), gunTexture.getHeight(),
             false, flip);
+        batch.draw(laserTexture, player.x, playerHghDiff + player.y);
 
         camera.update();
 
