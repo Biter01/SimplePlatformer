@@ -1,6 +1,14 @@
 # SimpleRPG
 
-Simple Java libgdx RPG with random Perlin Noise World Generation.
+Simple Java libgdx RPG with random Perlin Noise world generation.
+
+## Current Features
+
+- Game world generation
+- drawing of tiles
+- Camera movement
+- simple shooting mechanic
+
 
 ## Platforms
 
