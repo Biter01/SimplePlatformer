@@ -2,7 +2,7 @@ package com.yourgame;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.yourgame.utils.PerlinNoise;
 
 import java.util.Random;
 
@@ -11,26 +11,27 @@ public class World {
     public final int height;
     public final int width;
     private long seed;
-    private PerlinNoise perlinNoise;
     private static final float SCALE = 0.1f;
     public final float[][] heightMap;
+    public final int TILE_SIZE;
 
-    private World(final int height, final int width, long seed, PerlinNoise perlinNoise) {
+    private World(final int height, final int width, int TILE_SIZE, long seed) {
         this.height = height;
         this.width = width;
         this.seed = seed;
         heightMap = new float[width][height];
-        this.perlinNoise = perlinNoise;
+        this.TILE_SIZE = TILE_SIZE;
         createMap();
     }
 
-    public static World create(final int height, final int width) {
+    public static World create(final int height, final int width, int TILE_SIZE) {
         long seed = new Random().nextLong();
-        PerlinNoise perlinNoise = new PerlinNoise(seed);
-        return new World(height, width, seed, perlinNoise);
+        return new World(height, width, TILE_SIZE,seed);
     }
 
     private void createMap() {
+        PerlinNoise perlinNoise = new PerlinNoise(seed);
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 // Generate height using the seeded Perlin noise
@@ -40,7 +41,7 @@ public class World {
         }
     }
 
-    public void render(TextureRegion tiles[][], float tileSize, Batch batch) {
+    public void render(TextureRegion tiles[][],  Batch batch) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 float height = heightMap[x][y];
@@ -61,7 +62,7 @@ public class World {
                     texture = tiles[0][1]; //Tree
                 }
 
-                batch.draw(texture, x * tileSize , y * tileSize);
+                batch.draw(texture, x * TILE_SIZE , y * TILE_SIZE);
             }
         }
 

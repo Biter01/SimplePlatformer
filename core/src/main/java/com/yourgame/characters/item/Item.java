@@ -6,15 +6,17 @@ import com.yourgame.characters.Move;
 public abstract class Item {
     public float x;
     public float y;
-    private Texture texture;
+    private final Texture texture;
 
-    public Item(float x, float y, Texture texture) {
-        this.x = x;
-        this.y= y;
+    public Item(Texture texture) {
         this.texture = texture;
     }
 
-    abstract void use();
+    public abstract void use(float x, float y);
 
+    public Texture getTexture() {
+        return texture;
+    }
 
+    public abstract void update(float deltaTime);
 }

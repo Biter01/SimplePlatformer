@@ -17,16 +17,12 @@ public abstract class Character {
         this.name = name;
     }
 
-
-
-
     public String getName() {
         return getName();
     }
 
-    public abstract void move(Move move, float value);
-
-    public abstract void useItem(Item item);
+    public abstract void move(Move move, float speed);
+    public abstract void useItem();
     public abstract void draw(SpriteBatch batch);
 
 }
