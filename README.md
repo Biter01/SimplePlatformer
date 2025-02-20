@@ -5,7 +5,7 @@ Simple Java libgdx RPG with random Perlin Noise world generation.
 ## Current Features
 
 - Game world generation
-- drawing of tiles
+- drawing of assets
 - Camera movement
 - simple shooting mechanic
 
