@@ -1,6 +1,6 @@
-# SimplePlattformer
+# SimpleRPG
 
-Simple Java libgdx Plattformer with random Perlin Noise World Generation.
+Simple Java libgdx RPG with random Perlin Noise World Generation.
 
 ## Platforms
 
