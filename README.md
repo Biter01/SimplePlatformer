@@ -7,7 +7,8 @@ Simple Java libgdx RPG with random Perlin Noise world generation.
 - Game world generation
 - drawing of assets
 - Camera movement
-- simple shooting mechanic
+- simple player movement
+- simple shooting mechanic left click
 
 
 ## Platforms
