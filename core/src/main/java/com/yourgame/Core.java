@@ -126,7 +126,6 @@ public class Core extends ApplicationAdapter {
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             player.useItem();
-            Weapon weapon = (Weapon)item;
         }
 
 

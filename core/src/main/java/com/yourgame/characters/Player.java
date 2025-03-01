@@ -1,14 +1,14 @@
 package com.yourgame.characters;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.yourgame.utils.AngleSlope;
 import com.yourgame.utils.ScreenUtils;
 import com.yourgame.characters.item.Item;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class Player extends Character {
     private Texture texture;
@@ -17,6 +17,7 @@ public class Player extends Character {
     public final float playerHghDiff;
     private float itemX;
     private float itemY;
+    AngleSlope clickObj;
 
     public Player(float x, float y, int health, String name, String texturePath) {
         super(x, y, health, name);
@@ -25,7 +26,6 @@ public class Player extends Character {
         playerHghDiff = texture.getHeight() * ScreenUtils.screenScale() - texture.getHeight();
         itemY = y-playerHghDiff/2 - 2;
         itemX = x;
-
     }
 
     @Override
@@ -50,15 +50,16 @@ public class Player extends Character {
     @Override
     public void useItem() {
         Item item = getSelectedItem();
+        if (clickObj == null) {
+            return;
+        }
 
-        item.use(itemX, y);
+        item.use(getPlayerCenter().x-3, getPlayerCenter().y, clickObj);
     }
 
     @Override
     public void draw(SpriteBatch batch) {
         //draw player
-
-
         batch.draw(texture, x, y-playerHghDiff/2,
             (float) texture.getWidth() / 2, (float) texture.getHeight() / 2,
             texture.getWidth(), texture.getHeight(),
@@ -66,20 +67,16 @@ public class Player extends Character {
             0, 0, texture.getWidth(), texture.getHeight(),
             false, false);
 
+
     }
 
-    public void drawMainItem(SpriteBatch batch) {
-        Texture itemTextue = getSelectedItem().getTexture();
+    public void drawMainItem(SpriteBatch batch, Vector3 clickCordinates) {
+        itemY =  y-playerHghDiff/2 - 2;
         itemX = x;
-        itemY = y-playerHghDiff/2 - 2;
-        batch.draw(itemTextue, itemX, itemY,
-            (float) itemTextue.getWidth() / 2, (float) itemTextue.getHeight() / 2,
-            itemTextue.getWidth(), itemTextue.getHeight(),
-            1, ScreenUtils.screenScale(), 0,
-            0, 0, itemTextue.getWidth(), itemTextue.getHeight(),
-            false, false);
+        clickObj = getAngleSlope(clickCordinates);
+        //System.out.println(clickObj.getSlope() + " " + clickObj.getAngle());
+        getSelectedItem().draw(batch,itemX,itemY, clickObj);
     }
-
 
     public void removeItem(int pos) {
     }
@@ -109,5 +106,27 @@ public class Player extends Character {
         float playerCenterY = y - (playerHghDiff / 2f) + getTexture().getHeight() / 2f;
         return new Vector2(playerCenterX, playerCenterY);
     }
+
+    private AngleSlope getAngleSlope(Vector3 clickCordinates) {
+        float a = clickCordinates.x - getPlayerCenter().x;
+        float b = clickCordinates.y - getPlayerCenter().y;
+
+        if(a == 0) {
+            a = Float.MIN_VALUE;
+        }
+
+        float slope = b/a;
+
+        double deg = (Math.atan2(b, a))/(2*Math.PI) * 360;
+        float angle = (float)deg;
+        if(deg < 0) {
+            angle =  (float)(Math.abs(deg + 180) +180);
+        }
+        //normalize for rotation
+        angle = (angle+180) %360;
+
+        return new AngleSlope(angle, slope);
+    }
+
 
 }

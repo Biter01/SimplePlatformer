@@ -24,5 +24,4 @@ public final class ScreenUtils {
         shapeRenderer.end();
     }
 
-
 }

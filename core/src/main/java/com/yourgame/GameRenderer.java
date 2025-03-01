@@ -1,33 +1,27 @@
 package com.yourgame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.yourgame.characters.Player;
 import com.yourgame.characters.item.Item;
-import com.yourgame.characters.item.Missile;
-import com.yourgame.characters.item.Weapon;
-import com.yourgame.utils.ScreenUtils;
 
 
 public class GameRenderer {
-    private SpriteBatch batch;
-    private OrthographicCamera camera;
-    private Player player;
+    private final SpriteBatch batch;
+    private final OrthographicCamera camera;
+    private final Player player;
     private TextureRegion[][] tiles;
-    private World gameWorld;
+    private final World gameWorld;
     private Item item;
-    private FrameBuffer frameBuffer;
-    private Texture frameBufferTexture;
+    private final FrameBuffer frameBuffer;
+    private final Texture frameBufferTexture;
+    private Vector3 clickCordinates;
 
     public GameRenderer(World gameWorld, Player player, Item item, OrthographicCamera camera,FrameBuffer frameBuffer, SpriteBatch batch) {
         this.batch = batch;
@@ -38,35 +32,23 @@ public class GameRenderer {
         this.frameBuffer = frameBuffer;
         frameBufferTexture = frameBuffer.getColorBufferTexture();
         frameBufferTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        clickCordinates = new Vector3(player.getPlayerCenter().x, player.getPlayerCenter().y, 0);
     }
 
     public void render() {
-
         batch.setProjectionMatrix(camera.combined);
         // Draw world
         batch.draw(frameBufferTexture, 0, 0, gameWorld.width * 16, gameWorld.height * 16);
         // Draw player
         player.draw(batch);
 
-        Vector3 worldCoordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-        float a = worldCoordinates.x - player.getPlayerCenter().x;
-        float b = worldCoordinates.y - player.getPlayerCenter().y;
-        double bDiva = b / a;
+        updateclickCordinates();
 
-        double deg = (Math.atan2(b, a))/(2*Math.PI) * 360;
-        double angle = deg;
-        if(deg < 0) {
-          angle =  Math.abs(deg + 180) +180;
-        }
 
-        // Draw missiles
-        Weapon weapon = (Weapon) item;
-        for (Missile missile : weapon.getMissiles()) {
-            batch.draw(missile.getTexture(), missile.getPosition().x, missile.getPosition().y);
-        }
+        clickCordinates = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-        player.drawMainItem(batch);
 
+        player.drawMainItem(batch, clickCordinates);
     }
 
     public void renderToFrameBuffer(TextureRegion[][] tiles) {
@@ -81,5 +63,10 @@ public class GameRenderer {
 
         frameBuffer.end();
     }
+
+    private void updateclickCordinates() {
+
+    }
+
 
 }

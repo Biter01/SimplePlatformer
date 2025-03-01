@@ -1,22 +1,19 @@
 package com.yourgame.characters.item;
 
+
 import com.badlogic.gdx.graphics.Texture;
-import com.yourgame.characters.Move;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.yourgame.utils.AngleSlope;
 
-public abstract class Item {
-    public float x;
-    public float y;
-    private final Texture texture;
+public interface  Item {
 
-    public Item(Texture texture) {
-        this.texture = texture;
-    }
+    void use(float x, float y, AngleSlope clickObject);
 
-    public abstract void use(float x, float y);
+    void update(float deltaTime);
 
-    public Texture getTexture() {
-        return texture;
-    }
+    Texture getTexture();
 
-    public abstract void update(float deltaTime);
+    void draw(SpriteBatch batch, float x, float y, AngleSlope clickObj);
+
 }
